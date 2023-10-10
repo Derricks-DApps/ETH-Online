@@ -32,8 +32,7 @@ Lorem ipsum
 
 ## Contributions
 
-Scaffold-ETH: 
-  * <a href="https://github.com/scaffold-eth/scaffold-eth-2/pull/559">https://github.com/scaffold-eth/scaffold-eth-2/pull/559</a> (i.e. I added a contribution to scaffold eth)
+Improvements submitted to project as we integrated them into our project.
     
 
   
