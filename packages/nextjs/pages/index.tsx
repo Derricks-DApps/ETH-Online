@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Modal from "../components/Modal";
@@ -27,7 +27,7 @@ const NavLink = ({ href, children }: { href: string; children: React.ReactNode }
         textAlign: "center",
         fontSize: "1.5em",
       }}
-      onClick={handleClick as MouseEventHandler<HTMLAnchorElement>}
+      onClick={handleClick as any}
       className={`${
         isActive ? "bg-secondary shadow-md" : ""
       } hover:bg-secondary hover:shadow-md focus:!bg-secondary active:!text-neutral py-1.5 px-3 text-sm rounded-full gap-2 grid grid-flow-col`}
@@ -66,11 +66,13 @@ const Home: NextPage = () => {
               <strong>0.1 ETH</strong>
               <p>Have a Barcode NFT minted and created for you to own and lable products with.</p>
             </div>
+
             <div className="flex flex-col bg-base-100 px-10 py-10 text-center items-center max-w-xs rounded-3xl">
               {/* <SparklesIcon className="h-8 w-8 fill-secondary" /> */}
               <strong>0.01 ETH</strong>
               <p>Valid product barcodes to prevent theft or fraud. This platform is secure</p>
             </div>
+
             <div className="flex flex-col bg-base-100 px-10 py-10 text-center items-center max-w-xs rounded-3xl">
               {/* <MagnifyingGlassIcon className="h-8 w-8 fill-secondary" /> */}
               <strong>0.05 ETH</strong>

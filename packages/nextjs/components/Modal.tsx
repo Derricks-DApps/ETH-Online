@@ -1,5 +1,4 @@
-// eslint-disable-next-line
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import Barcode from "react-jsbarcode";
 
@@ -9,7 +8,19 @@ type ModalProps = {
 };
 
 function Modal({ onClose }: ModalProps) {
+  const [barcodeValue, setBarcodeValue] = useState("");
+
+  function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setBarcodeValue(event.target.value);
+  }
+
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    // Do barcode minting here
+  }
+
   return (
+    //
     <Transition appear show={true}>
       <Dialog as="div" className="fixed inset-0 z-10 overflow-y-auto" onClose={onClose}>
         <div className="min-h-screen px-4 text-center">
@@ -19,7 +30,7 @@ function Modal({ onClose }: ModalProps) {
             bg-black opacity-30"
           />
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white shadow-xl rounded-2xl p-8 text-black">
-            <div className="absolute top-2 right-2 text-gray-500 hover:text-gray-900" onClick={onClose}>
+            <div className="absolute top-2 left-2 text-gray-500 hover:text-gray-900" onClick={onClose}>
               <svg
                 className="w-6 h-6"
                 fill="none"
@@ -30,8 +41,12 @@ function Modal({ onClose }: ModalProps) {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </div>
-            <div className="flex justify-center items-center gap-12 flex-col sm:flex-row">
-              <Barcode value="ABC123" options={{ format: "code128" }} />
+            <div className="flex justify-center items-center gap-12 flex-col sm:flex-col">
+              <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4">
+                {barcodeValue && <Barcode value={barcodeValue} options={{ format: "code128" }} />}
+                <input type="text" value={barcodeValue} onChange={handleInputChange} />
+                <button type="submit">Generate Barcode</button>
+              </form>
             </div>
           </div>
         </div>
