@@ -41,20 +41,20 @@ export const Header = () => {
       </li>
       <li>
         <NavLink href="/debug">
-          <BugAntIcon className="h-4 w-4" />
-          Debug Contracts
+          {/* <BugAntIcon className="h-4 w-4" /> */}
+          Services
+        </NavLink>
+      </li>     
+      <li>
+        <NavLink href="/blockexplorer">
+          <MagnifyingGlassIcon className="h-4 w-4" />
+          Barcodes
         </NavLink>
       </li>
       <li>
         <NavLink href="/example-ui">
-          <SparklesIcon className="h-4 w-4" />
-          Example UI
-        </NavLink>
-      </li>
-      <li>
-        <NavLink href="/blockexplorer">
-          <MagnifyingGlassIcon className="h-4 w-4" />
-          Block Explorer
+          {/* <SparklesIcon className="h-4 w-4" /> */}
+          Proposals
         </NavLink>
       </li>
     </>
@@ -87,12 +87,9 @@ export const Header = () => {
         </div>
         <Link href="/" passHref className="hidden lg:flex items-center gap-2 ml-4 mr-6 shrink-0">
           <div className="flex relative w-10 h-10">
-            <Image alt="SE2 logo" className="cursor-pointer" fill src="/logo.svg" />
+            {/* <Image alt="SE2 logo" className="cursor-pointer" fill src="/logo.svg" /> */}
           </div>
-          <div className="flex flex-col">
-            <span className="font-bold leading-tight">Scaffold-ETH</span>
-            <span className="text-xs">Ethereum dev stack</span>
-          </div>
+          <h1>BTree</h1>
         </Link>
         <ul className="hidden lg:flex lg:flex-nowrap menu menu-horizontal px-1 gap-2">{navLinks}</ul>
       </div>
