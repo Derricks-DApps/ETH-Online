@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import Modal from "../components/Modal";
+import BarcodeGenerator from "../components/BarcodeGenerator";
 import type { NextPage } from "next";
 import { MetaHeader } from "~~/components/MetaHeader";
 
@@ -86,11 +86,7 @@ const Home: NextPage = () => {
           <div onClick={handleGetBarcodeClick}>
             <NavLink href="/">Get a Barcode</NavLink>
           </div>
-          {showModal && (
-            <Modal onClose={() => setShowModal(false)}>
-              <p>Modal content</p>
-            </Modal>
-          )}
+          {showModal && <BarcodeGenerator onClose={() => setShowModal(false)}></BarcodeGenerator>}
         </div>
       </div>
     </>

@@ -1,13 +1,12 @@
-import { ReactNode, useState } from "react";
+import { useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import Barcode from "react-jsbarcode";
 
 type ModalProps = {
-  children: ReactNode;
   onClose: () => void;
 };
 
-function Modal({ onClose }: ModalProps) {
+function BarcodeGenerator({ onClose }: ModalProps) {
   const [barcodeValue, setBarcodeValue] = useState("");
 
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -44,7 +43,12 @@ function Modal({ onClose }: ModalProps) {
             <div className="flex justify-center items-center gap-12 flex-col sm:flex-col">
               <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4">
                 {barcodeValue && <Barcode value={barcodeValue} options={{ format: "code128" }} />}
-                <input type="text" value={barcodeValue} onChange={handleInputChange} />
+                <input
+                  type="text"
+                  value={barcodeValue}
+                  onChange={handleInputChange}
+                  className="input input-bordered input-primary w-full max-w-xs"
+                />
                 <button
                   type="submit"
                   className="text-white w-full md:w-1/3 mx-auto py-4 px-8 rounded-full text-lg font-bold"
@@ -61,4 +65,4 @@ function Modal({ onClose }: ModalProps) {
   );
 }
 
-export default Modal;
+export default BarcodeGenerator;
