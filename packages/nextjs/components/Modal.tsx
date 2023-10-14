@@ -30,7 +30,7 @@ function Modal({ onClose }: ModalProps) {
             bg-black opacity-30"
           />
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white shadow-xl rounded-2xl p-8 text-black">
-            <div className="absolute top-2 left-2 text-gray-500 hover:text-gray-900" onClick={onClose}>
+            <div className="absolute top-2 left-2 text-gray-500 hover:text-gray-900 color-black" onClick={onClose}>
               <svg
                 className="w-6 h-6"
                 fill="none"
@@ -45,7 +45,13 @@ function Modal({ onClose }: ModalProps) {
               <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4">
                 {barcodeValue && <Barcode value={barcodeValue} options={{ format: "code128" }} />}
                 <input type="text" value={barcodeValue} onChange={handleInputChange} />
-                <button type="submit">Generate Barcode</button>
+                <button
+                  type="submit"
+                  className="text-white w-full md:w-1/3 mx-auto py-4 px-8 rounded-full text-lg font-bold"
+                  style={{ background: "cadetblue", width: "100%" }}
+                >
+                  Generate
+                </button>
               </form>
             </div>
           </div>
