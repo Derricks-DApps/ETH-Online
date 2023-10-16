@@ -1,4 +1,4 @@
-export default interface Barcode {
+export default interface BarcodeTemplate {
   id: number;
   productName: string;
   description: string;

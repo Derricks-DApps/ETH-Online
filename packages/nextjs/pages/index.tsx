@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import BarcodeGenerator from "../components/BarcodeGenerator";
+import BarcodeGenerator from "../components/modals/BarcodeGenerator";
 import type { NextPage } from "next";
 import { MetaHeader } from "~~/components/MetaHeader";
 

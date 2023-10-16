@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { MetaHeader } from "~~/components/MetaHeader";
+import BarcodeViewer from "~~/components/modals/BarcodeViewer";
+import BarcodeTemplate from "~~/interfaces/BarcodeTemplate";
 
-const barcodes = [
+const barcodes: BarcodeTemplate[] = [
   {
     id: 1,
     productName: "Product 1",
@@ -23,6 +25,16 @@ const barcodes = [
 ];
 
 const BarcodeExplorer = () => {
+  const [selectedBarcode, setSelectedBarcode] = useState<BarcodeTemplate | null>(null);
+
+  const handleRowClick = (barcode: BarcodeTemplate) => {
+    setSelectedBarcode(barcode);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedBarcode(null);
+  };
+
   return (
     <>
       <MetaHeader />
@@ -34,18 +46,18 @@ const BarcodeExplorer = () => {
           <br />
           <p>This page is under construction. Please check back later.</p>
 
-          <table className="table table-bordered table-striped w-full">
+          <table className="table text-xl bg-base-100 table-zebra w-full md:table-md table-sm">
             <thead>
-              <tr>
-                <th className="text-left">ID</th>
-                <th className="text-left">Product Name</th>
-                <th className="text-left">Description</th>
-                <th className="text-left">Value</th>
+              <tr className="rounded-xl text-sm text-base-content">
+                <th className="text-left bg-primary hover text-sm">ID</th>
+                <th className="text-left bg-primary hover text-sm">Product Name</th>
+                <th className="text-left bg-primary hover text-sm">Description</th>
+                <th className="text-left bg-primary hover text-sm">Value</th>
               </tr>
             </thead>
             <tbody>
               {barcodes.map(barcode => (
-                <tr key={barcode.id}>
+                <tr key={barcode.id} onClick={() => handleRowClick(barcode)} className="cursor-pointer">
                   <td>{barcode.id}</td>
                   <td>{barcode.productName}</td>
                   <td>{barcode.description}</td>
@@ -55,6 +67,9 @@ const BarcodeExplorer = () => {
             </tbody>
           </table>
         </div>
+        {selectedBarcode && (
+          <BarcodeViewer barcode={selectedBarcode} isOpen={!!selectedBarcode} onClose={handleCloseModal} />
+        )}
       </div>
     </>
   );
