@@ -51,7 +51,7 @@ export const Header = () => {
         </NavLink>
       </li>
       <li>
-        <NavLink href="/example-ui">
+        <NavLink href="/dao-explorer">
           {/* <SparklesIcon className="h-4 w-4" /> */}
           Proposals
         </NavLink>
