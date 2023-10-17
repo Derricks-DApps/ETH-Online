@@ -22,11 +22,12 @@ const NavLink = ({ href, children }: { href: string; children: React.ReactNode }
       style={{
         backgroundColor: "cadetblue",
         color: "white",
-        width: "30%",
+        width: "50%",
         margin: "auto",
         padding: "20px",
         textAlign: "center",
         fontSize: "1.5em",
+        lineHeight: "1em",
       }}
       onClick={handleClick as any}
       className={`${
