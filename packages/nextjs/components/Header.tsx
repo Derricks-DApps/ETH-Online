@@ -1,4 +1,5 @@
 import React, { useCallback, useRef, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Bars3Icon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
@@ -88,7 +89,7 @@ export const Header = () => {
           <div className="flex relative w-10 h-10">
             <Image alt="BTree" fill src="/assets/logo.png" />
           </div>
-          <h1 style={{color: "dodgerblue"}}>BTree</h1>
+          <h1 style={{ color: "dodgerblue" }}>BTree</h1>
         </Link>
         <ul className="hidden lg:flex lg:flex-nowrap menu menu-horizontal px-1 gap-2">{navLinks}</ul>
       </div>
