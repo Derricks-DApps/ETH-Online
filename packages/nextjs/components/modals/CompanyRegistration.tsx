@@ -1,29 +1,13 @@
-import { useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import html2canvas from "html2canvas";
-import Barcode from "react-jsbarcode";
 
 type ModalProps = {
   onClose: () => void;
 };
 
-function BarcodeGenerator({ onClose }: ModalProps) {
-  const [barcodeValue, setBarcodeValue] = useState("");
-  const barcodeRef = useRef<HTMLDivElement>(null);
-
-  function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setBarcodeValue(event.target.value);
-  }
-
+function CompanyRegistration({ onClose }: ModalProps) {
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    // Do barcode minting here
-    if (barcodeRef.current) {
-      html2canvas(barcodeRef.current).then(canvas => {
-        const dataUrl = canvas.toDataURL();
-        console.log("Image url: ", dataUrl);
-      });
-    }
+    // Register company here
     onClose();
   }
 
@@ -53,16 +37,7 @@ function BarcodeGenerator({ onClose }: ModalProps) {
             </div>
             <div className="flex justify-center items-center gap-12 flex-col sm:flex-col">
               <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4">
-                <div ref={barcodeRef}>
-                  {barcodeValue && <Barcode value={barcodeValue} options={{ format: "code128" }} />}
-                </div>
-
-                <input
-                  type="text"
-                  value={barcodeValue}
-                  onChange={handleInputChange}
-                  className="input input-bordered input-primary w-full max-w-xs"
-                />
+                <input type="text" className="input input-bordered input-primary w-full max-w-xs" />
                 <button
                   type="submit"
                   className="text-white w-full md:w-1/3 mx-auto py-4 px-8 rounded-full text-lg font-bold"
@@ -79,4 +54,4 @@ function BarcodeGenerator({ onClose }: ModalProps) {
   );
 }
 
-export default BarcodeGenerator;
+export default CompanyRegistration;

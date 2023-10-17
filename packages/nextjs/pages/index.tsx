@@ -38,10 +38,15 @@ const NavLink = ({ href, children }: { href: string; children: React.ReactNode }
 };
 
 const Home: NextPage = () => {
-  const [showModal, setShowModal] = useState(false);
+  const [showBarcodeGenerator, setShowBarcodeGenerator] = useState(false);
+  const [showCompanyRegistration, setShowCompanyRegistration] = useState(false);
 
   const handleGetBarcodeClick = () => {
-    setShowModal(true);
+    setShowBarcodeGenerator(true);
+  };
+
+  const handleRegisterCompanyClick = () => {
+    setShowCompanyRegistration(true);
   };
 
   return (
@@ -82,11 +87,19 @@ const Home: NextPage = () => {
           <br />
           <br />
           <br />
-          {/* assuming the user has no barcodes */}
-          <div onClick={handleGetBarcodeClick}>
-            <NavLink href="/">Get a Barcode</NavLink>
+
+          <div className="flex flex-col md:flex-row">
+            <div className="md:w-1/2" onClick={handleRegisterCompanyClick}>
+              <NavLink href="/">Register your company</NavLink>
+            </div>
+            <div className="md:w-1/2" onClick={handleGetBarcodeClick}>
+              <NavLink href="/">Get a Barcode</NavLink>
+            </div>
           </div>
-          {showModal && <BarcodeGenerator onClose={() => setShowModal(false)}></BarcodeGenerator>}
+
+          {showBarcodeGenerator && <BarcodeGenerator onClose={() => setShowBarcodeGenerator(false)}></BarcodeGenerator>}
+
+          {showCompanyRegistration && <div>Company Registration</div>}
         </div>
       </div>
     </>
