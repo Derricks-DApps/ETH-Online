@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import BarcodeGenerator from "../components/modals/BarcodeGenerator";
+import CompanyRegistration from "../components/modals/CompanyRegistration";
 import type { NextPage } from "next";
 import { MetaHeader } from "~~/components/MetaHeader";
 
@@ -99,7 +100,9 @@ const Home: NextPage = () => {
 
           {showBarcodeGenerator && <BarcodeGenerator onClose={() => setShowBarcodeGenerator(false)}></BarcodeGenerator>}
 
-          {showCompanyRegistration && <div>Company Registration</div>}
+          {showCompanyRegistration && (
+            <CompanyRegistration onClose={() => setShowCompanyRegistration(false)}></CompanyRegistration>
+          )}
         </div>
       </div>
     </>

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 
 type ModalProps = {
@@ -5,10 +6,27 @@ type ModalProps = {
 };
 
 function CompanyRegistration({ onClose }: ModalProps) {
+  // expand this as a legit form though
+  const [companyName, setCompanyName] = useState("");
+  const [taxNumber, setTaxNumber] = useState("");
+  const [address, setAddress] = useState("");
+
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    // Register company here
+    // Do stuff with company registration information here - with companyName, taxNumber and address variables
     onClose();
+  }
+
+  function handleCompanyNameChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setCompanyName(event.target.value);
+  }
+
+  function handleTaxNumberChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setTaxNumber(event.target.value);
+  }
+
+  function handleAddressChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setAddress(event.target.value);
   }
 
   return (
@@ -35,15 +53,36 @@ function CompanyRegistration({ onClose }: ModalProps) {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </div>
-            <div className="flex justify-center items-center gap-12 flex-col sm:flex-col">
+            <div className="flex justify-center items-center gap-6 flex-col sm:flex-col">
+              <h2 className="text-3xl font-bold mb-4">Register your company</h2>
               <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4">
-                <input type="text" className="input input-bordered input-primary w-full max-w-xs" />
+                <input
+                  type="text"
+                  className="input input-bordered input-primary bg-white w-full max-w-xs"
+                  placeholder="Company name"
+                  value={companyName}
+                  onChange={handleCompanyNameChange}
+                />
+                <input
+                  type="text"
+                  className="input input-bordered input-primary bg-white w-full max-w-xs"
+                  placeholder="Tax Number"
+                  value={taxNumber}
+                  onChange={handleTaxNumberChange}
+                />
+                <input
+                  type="text"
+                  className="input input-bordered input-primary bg-white w-full max-w-xs"
+                  placeholder="Address"
+                  value={address}
+                  onChange={handleAddressChange}
+                />
                 <button
                   type="submit"
                   className="text-white w-full md:w-1/3 mx-auto py-4 px-8 rounded-full text-lg font-bold"
                   style={{ background: "cadetblue", width: "100%" }}
                 >
-                  Generate
+                  Register
                 </button>
               </form>
             </div>
