@@ -86,9 +86,9 @@ export const Header = () => {
         </div>
         <Link href="/" passHref className="hidden lg:flex items-center gap-2 mr-6 shrink-0">
           <div className="flex relative w-10 h-10">
-            <Image alt="BTree" fill src="/assets/logo.png" />
+            <img alt="BTree" src="/assets/logo.png" />
           </div>
-          <h1 style={{color: "dodgerblue"}}>BTree</h1>
+          <h1 style={{ color: "dodgerblue" }}>BTree</h1>
         </Link>
         <ul className="hidden lg:flex lg:flex-nowrap menu menu-horizontal px-1 gap-2">{navLinks}</ul>
       </div>
