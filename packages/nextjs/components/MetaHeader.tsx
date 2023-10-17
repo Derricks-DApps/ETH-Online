@@ -15,7 +15,7 @@ const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL ? `https://${process.env.NEXT
 
 export const MetaHeader = ({
   title = "BTree",
-  description = "Built with 🏗 Scaffold-ETH 2",
+  description = "Digital product barcodes",
   image = "thumbnail.jpg",
   twitterCard = "summary_large_image",
   children,

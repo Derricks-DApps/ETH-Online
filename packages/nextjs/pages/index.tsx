@@ -57,11 +57,11 @@ const Home: NextPage = () => {
       <div className="flex items-center flex-col flex-grow pt-10">
         <div className="px-5">
           <h1 className="text-center mb-8">
-            <span className="block text-4xl font-bold">BTree</span>
+            {/* <span className="block text-4xl font-bold">BTree</span> */}
+            <img src="/assets/logo.png" alt="BTree" style={{display: "inline", width: "256px", height: "256px"}} />
           </h1>
-          <br />
-          <p>
-            Governance and issuing service for Barcodes as an alternative to GS1. Gives businesses a global database to
+          <p className="description">
+            BTree is a governance and issuing service for Barcodes as an alternative to GS1. Gives businesses a global database to
             share product information.
           </p>
         </div>

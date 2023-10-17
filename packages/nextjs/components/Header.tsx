@@ -84,11 +84,11 @@ export const Header = () => {
             </ul>
           )}
         </div>
-        <Link href="/" passHref className="hidden lg:flex items-center gap-2 ml-4 mr-6 shrink-0">
+        <Link href="/" passHref className="hidden lg:flex items-center gap-2 mr-6 shrink-0">
           <div className="flex relative w-10 h-10">
-            {/* <Image alt="SE2 logo" className="cursor-pointer" fill src="/logo.svg" /> */}
+            <Image alt="BTree" fill src="/assets/logo.png" />
           </div>
-          <h1>BTree</h1>
+          <h1 style={{color: "dodgerblue"}}>BTree</h1>
         </Link>
         <ul className="hidden lg:flex lg:flex-nowrap menu menu-horizontal px-1 gap-2">{navLinks}</ul>
       </div>
