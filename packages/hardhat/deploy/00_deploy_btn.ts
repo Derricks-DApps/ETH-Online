@@ -19,6 +19,7 @@ const deployBTN: DeployFunction = async function (hre: HardhatRuntimeEnvironment
     You can run the `yarn account` command to check your balance in every network.
   */
   const { deployer } = await hre.getNamedAccounts();
+  console.log(deployer);
   const { deploy } = hre.deployments;
 
   await deploy("BTN", {
