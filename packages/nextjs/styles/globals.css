@@ -31,10 +31,10 @@ p {
   @apply shadow-none;
 }
 
-.description{
+.description {
   font-size: 1.5em;
 }
 
-.create-barcode-modal{
-  width: 25%;
+.create-barcode-modal {
+  width: 50%;
 }
