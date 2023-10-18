@@ -19,6 +19,15 @@ export const ContractInteraction = () => {
       console.log("📦 Transaction blockHash", txnReceipt.blockHash);
     },
   });
+  // const { data: Hi, isLoading} = useScaffoldContractRead({
+  //   contractName: "BTN",
+  //   functionName: "owner",
+  //   args: [],
+  //   onBlockConfirmation: txnReceipt => {
+  //     setNewGreeting("");
+  //     console.log("📦 Transaction blockHash", txnReceipt.blockHash);
+  //   },
+  // });
 
   return (
     <div className="flex bg-base-300 relative pb-10">

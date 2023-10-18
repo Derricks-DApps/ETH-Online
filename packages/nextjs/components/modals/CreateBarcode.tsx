@@ -27,7 +27,7 @@ function CreateBarcode({ onClose }: ModalProps) {
     onClose();
   }
 
-  // Company Registration form 
+  // Company Registration form
   const [companyName, setCompanyName] = useState("");
   const [taxNumber, setTaxNumber] = useState("");
   const [address, setAddress] = useState("");

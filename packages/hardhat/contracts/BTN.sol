@@ -1,26 +1,52 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
+import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Pausable.sol";
+import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol";
 
-contract BTN is ERC721, ERC721Burnable, Ownable {
-	uint256 private _nextTokenId;
-	string public product_name;
-	string public description;
+contract BTN is ERC1155, Ownable, ERC1155Pausable, ERC1155Supply {
+    uint256 public price;
+    uint256 public companiesCounter = 0;
+    mapping(address => uint256) public companyPrefix;
 
-	constructor(
-		address initialOwner,
-		string memory _product_name,
-		string memory _description
-	) ERC721("Barcode Tree Node", "BTN") Ownable() {
-		product_name = _product_name;
-		description = _description;
-	}
+    constructor(address initialOwner) ERC1155("") Ownable(initialOwner) {}
 
-	function safeMint(address to) public onlyOwner {
-		uint256 tokenId = _nextTokenId++;
-		_safeMint(to, tokenId);
-	}
+    function setURI(string memory newuri) public onlyOwner {
+        _setURI(newuri);
+    }
+
+    function pause() public onlyOwner {
+        _pause();
+    }
+
+    function unpause() public onlyOwner {
+        _unpause();
+    }
+
+    function mint(uint256 id, uint256 amount) public {
+        companiesCounter++;
+        companyPrefix[msg.sender] = companiesCounter;
+        _mint(msg.sender, id, amount, "");
+    }
+
+    function mintBatch(uint256[] memory ids, uint256[] memory amounts) public {
+        _mintBatch(msg.sender, ids, amounts, "");
+    }
+
+    // The following functions are overrides required by Solidity.
+
+    function _update(
+        address from,
+        address to,
+        uint256[] memory ids,
+        uint256[] memory values
+    ) internal override(ERC1155, ERC1155Pausable, ERC1155Supply) {
+        super._update(from, to, ids, values);
+    }
+
+    function setPrice(uint256 _price) external onlyOwner {
+        price = _price;
+    }
 }
