@@ -364,13 +364,19 @@ const contracts = {
               type: "function",
             },
             {
-              inputs: [],
-              name: "barcodesTotal",
-              outputs: [
+              inputs: [
                 {
                   internalType: "uint256",
                   name: "",
                   type: "uint256",
+                },
+              ],
+              name: "barcodes",
+              outputs: [
+                {
+                  internalType: "bool",
+                  name: "",
+                  type: "bool",
                 },
               ],
               stateMutability: "view",
@@ -386,6 +392,11 @@ const contracts = {
               ],
               name: "companies",
               outputs: [
+                {
+                  internalType: "uint16",
+                  name: "prefix",
+                  type: "uint16",
+                },
                 {
                   internalType: "uint64",
                   name: "taxNumber",
@@ -415,9 +426,9 @@ const contracts = {
               name: "companiesTotal",
               outputs: [
                 {
-                  internalType: "uint256",
+                  internalType: "uint16",
                   name: "",
-                  type: "uint256",
+                  type: "uint16",
                 },
               ],
               stateMutability: "view",
@@ -437,6 +448,52 @@ const contracts = {
                   internalType: "bool",
                   name: "",
                   type: "bool",
+                },
+              ],
+              stateMutability: "view",
+              type: "function",
+            },
+            {
+              inputs: [
+                {
+                  internalType: "address",
+                  name: "_company",
+                  type: "address",
+                },
+              ],
+              name: "getCompany",
+              outputs: [
+                {
+                  components: [
+                    {
+                      internalType: "uint16",
+                      name: "prefix",
+                      type: "uint16",
+                    },
+                    {
+                      internalType: "uint64",
+                      name: "taxNumber",
+                      type: "uint64",
+                    },
+                    {
+                      internalType: "address",
+                      name: "companyOwner",
+                      type: "address",
+                    },
+                    {
+                      internalType: "string",
+                      name: "name",
+                      type: "string",
+                    },
+                    {
+                      internalType: "string",
+                      name: "addr",
+                      type: "string",
+                    },
+                  ],
+                  internalType: "struct BTN.Company",
+                  name: "",
+                  type: "tuple",
                 },
               ],
               stateMutability: "view",
@@ -469,6 +526,11 @@ const contracts = {
             {
               inputs: [
                 {
+                  internalType: "uint256",
+                  name: "barcode",
+                  type: "uint256",
+                },
+                {
                   internalType: "string",
                   name: "name",
                   type: "string",
@@ -477,11 +539,6 @@ const contracts = {
                   internalType: "string",
                   name: "description",
                   type: "string",
-                },
-                {
-                  internalType: "uint256",
-                  name: "amount",
-                  type: "uint256",
                 },
               ],
               name: "mint",
@@ -500,13 +557,6 @@ const contracts = {
                 },
               ],
               stateMutability: "view",
-              type: "function",
-            },
-            {
-              inputs: [],
-              name: "pause",
-              outputs: [],
-              stateMutability: "nonpayable",
               type: "function",
             },
             {
@@ -569,9 +619,9 @@ const contracts = {
               name: "productsTotal",
               outputs: [
                 {
-                  internalType: "uint256",
+                  internalType: "uint16",
                   name: "",
-                  type: "uint256",
+                  type: "uint16",
                 },
               ],
               stateMutability: "view",
@@ -777,13 +827,6 @@ const contracts = {
                 },
               ],
               name: "transferOwnership",
-              outputs: [],
-              stateMutability: "nonpayable",
-              type: "function",
-            },
-            {
-              inputs: [],
-              name: "unpause",
               outputs: [],
               stateMutability: "nonpayable",
               type: "function",
