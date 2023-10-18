@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-// import CompanyRegistration from "../components/modals/CompanyRegistration";
 import BarcodeGenerator from "../components/modals/CreateBarcode";
 import type { NextPage } from "next";
 import { MetaHeader } from "~~/components/MetaHeader";
+import { useScaffoldContractRead } from "~~/hooks/scaffold-eth";
 
 const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => {
   const router = useRouter();
@@ -13,7 +13,16 @@ const NavLink = ({ href, children }: { href: string; children: React.ReactNode }
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
   };
-  ``;
+
+  const { data: company } = useScaffoldContractRead({
+    contractName: "BTN",
+    functionName: "companies",
+    args: ["0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"],
+  });
+
+  useEffect(() => {
+    console.log("Company: ", company);
+  }, []);
 
   return (
     <Link

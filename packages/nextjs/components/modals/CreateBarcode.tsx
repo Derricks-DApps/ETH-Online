@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-
-// import { useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
+import { useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
 
 type ModalProps = {
   onClose: () => void;
@@ -9,27 +8,31 @@ type ModalProps = {
 
 function CreateBarcode({ onClose }: ModalProps) {
   const [companyName, setCompanyName] = useState("");
-  const [taxNumber, setTaxNumber] = useState("");
-  // const [address, setAddress] = useState("");
+  const [taxNumber, setTaxNumber] = useState(0);
+  const [address, setAddress] = useState("");
 
   function handleCompanyNameChange(event: React.ChangeEvent<HTMLInputElement>) {
     setCompanyName(event.target.value);
   }
 
   function handleTaxNumberChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setTaxNumber(event.target.value);
+    setTaxNumber(Number(event.target.value));
+  }
+
+  function handleAddressChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setAddress(event.target.value);
   }
 
   /* commenting this out because of linting issues */
 
-  // const { writeAsync } = useScaffoldContractWrite({
-  //   contractName: "BTN",
-  //   functionName: "register",
-  //   args: [companyName, taxNumber, address],
-  //   onBlockConfirmation: txnReceipt => {
-  //     console.log("Transaction blockHash", txnReceipt.blockHash);
-  //   },
-  // });
+  const { writeAsync } = useScaffoldContractWrite({
+    contractName: "BTN",
+    functionName: "register",
+    args: [BigInt(taxNumber), companyName, address],
+    onBlockConfirmation: txnReceipt => {
+      console.log("Transaction blockHash", txnReceipt.blockHash);
+    },
+  });
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -43,7 +46,7 @@ function CreateBarcode({ onClose }: ModalProps) {
     // }
 
     /* Do barcode minting here */
-    // await writeAsync();
+    await writeAsync();
     onClose();
   }
 
@@ -92,31 +95,33 @@ function CreateBarcode({ onClose }: ModalProps) {
                   onChange={handleCompanyNameChange}
                 />
                 <input
-                  type="text"
+                  type="number"
                   className="input input-bordered input-primary bg-white w-full max-w-xs"
                   placeholder="Your company's tax number"
-                  value={taxNumber}
+                  value={taxNumber === 0 ? "" : taxNumber}
                   onChange={handleTaxNumberChange}
+                  min={0}
+                  step={1}
                 />
-                {/* <input
+                <input
                   type="text"
                   className="input input-bordered input-primary bg-white w-full max-w-xs"
                   placeholder="Address"
                   value={address}
                   onChange={handleAddressChange}
-                /> */}
-                <br></br>
+                />
+                {/* <br></br>
                 <input
                   type="text"
                   className="input input-bordered input-primary bg-white w-full max-w-xs"
                   placeholder="Your product's name"
-                />
+                /> */}
                 <button
                   type="submit"
                   className="text-white w-full md:w-1/3 mx-auto py-4 px-8 rounded-full text-lg font-bold"
                   style={{ background: "cadetblue", width: "100%" }}
                 >
-                  Create Barcode
+                  Register your company
                 </button>
               </form>
             </div>
