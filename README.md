@@ -33,6 +33,10 @@ Lorem ipsum
 ## Contributions
 
 Improvements submitted to project as we integrated them into our project.
+
+## Technologies used
+
+Mantle
     
 
   
