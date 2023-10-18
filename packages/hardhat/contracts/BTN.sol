@@ -47,7 +47,7 @@ contract BTN is ERC1155, Ownable, ERC1155Pausable, ERC1155Supply {
 		uint64 taxNumber,
 		string calldata name,
 		string calldata addr
-	) external {
+	) public {
 		require(companies[msg.sender].taxNumber == 0, "already registered");
 		companiesTotal++;
 		companies[msg.sender] = Company({
