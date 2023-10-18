@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { useScaffoldContractRead, useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
+import { useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
 
 type ModalProps = {
   onClose: () => void;
@@ -18,23 +18,14 @@ function CreateBarcode({ onClose }: ModalProps) {
     setTaxNumber(event.target.value);
   }
 
-  const { data: totalCounter } = useScaffoldContractRead({
-    contractName: "YourContract",
-    functionName: "greeting",
-  });
-
   const { writeAsync } = useScaffoldContractWrite({
     contractName: "BTN",
-    functionName: "setURI",
-    args: ["new-uri"],
+    functionName: "setPrice",
+    args: [BigInt(123)], // cause it's a uint256 variable on the other side...
     onBlockConfirmation: txnReceipt => {
       console.log("Transaction blockHash", txnReceipt.blockHash);
     },
   });
-
-  useEffect(() => {
-    console.log("Total counter: ", totalCounter);
-  }, [totalCounter]);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -110,6 +101,7 @@ function CreateBarcode({ onClose }: ModalProps) {
                   value={address}
                   onChange={handleAddressChange}
                 /> */}
+                <br></br>
                 <input
                   type="text"
                   className="input input-bordered input-primary bg-white w-full max-w-xs"
