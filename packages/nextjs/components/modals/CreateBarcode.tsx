@@ -53,11 +53,11 @@ function CreateBarcode({ onClose }: ModalProps) {
   return (
     <Transition appear show={true}>
       <Dialog as="div" className="fixed inset-0 z-10 overflow-y-auto" onClose={onClose}>
-        <div className="min-h-screen px-4 text-center">
+        <div className="min-h-screen px-4 text-center bg-black/30">
           <Transition.Child
             as={Dialog.Overlay}
             className="fixed inset-
-            bg-black opacity-30"
+             bg-black opacity-30"
           />
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white shadow-xl rounded-2xl p-8 text-black create-barcode-modal">
             <div

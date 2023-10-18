@@ -22,8 +22,8 @@ export const useScaffoldContract = <
 }) => {
   const { data: deployedContractData, isLoading: deployedContractLoading } = useDeployedContractInfo(contractName);
   const publicClient = usePublicClient();
-
   let contract = undefined;
+
   if (deployedContractData) {
     contract = getContract<
       Transport,
