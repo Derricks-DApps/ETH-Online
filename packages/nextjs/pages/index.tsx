@@ -54,12 +54,12 @@ const Home: NextPage = () => {
     <>
       <MetaHeader />
       <div className="flex items-center flex-col flex-grow pt-10">
-        <div className="px-5">
+        <div className="px-5 max-w-screen-lg mx-auto">
           <h1 className="text-center mb-8">
             {/* <span className="block text-4xl font-bold">BTree</span> */}
             <img src="/assets/logo.png" alt="BTree" style={{ display: "inline", width: "256px", height: "256px" }} />
           </h1>
-          <p className="description">
+          <p className="description text-center">
             BTree is a governance and issuing service for Barcodes as an alternative to GS1. Gives businesses a global
             database to share product information.
           </p>
@@ -85,10 +85,6 @@ const Home: NextPage = () => {
               <p>Become a DAO member and submit proposal and cast votes to improve Barcode services.</p>
             </div>
           </div> */}
-          <br />
-          <br />
-          <br />
-
           <div onClick={handleGetBarcodeClick}>
             <NavLink href="/">Get a Barcode</NavLink>
           </div>
