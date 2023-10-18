@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import BarcodeGenerator from "../components/modals/BarcodeGenerator";
+import BarcodeGenerator from "../components/modals/CreateBarcode";
 import CompanyRegistration from "../components/modals/CompanyRegistration";
 import type { NextPage } from "next";
 import { MetaHeader } from "~~/components/MetaHeader";
@@ -89,20 +89,12 @@ const Home: NextPage = () => {
           <br />
           <br />
 
-          <div className="flex flex-col md:flex-row">
-            <div className="md:w-1/2" onClick={handleRegisterCompanyClick}>
-              <NavLink href="/">Register your company</NavLink>
-            </div>
-            <div className="md:w-1/2" onClick={handleGetBarcodeClick}>
+      
+            <div onClick={handleGetBarcodeClick}>
               <NavLink href="/">Get a Barcode</NavLink>
             </div>
-          </div>
-
+          
           {showBarcodeGenerator && <BarcodeGenerator onClose={() => setShowBarcodeGenerator(false)}></BarcodeGenerator>}
-
-          {showCompanyRegistration && (
-            <CompanyRegistration onClose={() => setShowCompanyRegistration(false)}></CompanyRegistration>
-          )}
         </div>
       </div>
     </>

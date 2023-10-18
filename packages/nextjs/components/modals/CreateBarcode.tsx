@@ -7,7 +7,7 @@ type ModalProps = {
   onClose: () => void;
 };
 
-function BarcodeGenerator({ onClose }: ModalProps) {
+function CreateBarcode({ onClose }: ModalProps) {
   const [barcodeValue, setBarcodeValue] = useState("");
   const barcodeRef = useRef<HTMLDivElement>(null);
 
@@ -27,6 +27,23 @@ function BarcodeGenerator({ onClose }: ModalProps) {
     onClose();
   }
 
+  // Company Registration form 
+  const [companyName, setCompanyName] = useState("");
+  const [taxNumber, setTaxNumber] = useState("");
+  const [address, setAddress] = useState("");
+
+  function handleCompanyNameChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setCompanyName(event.target.value);
+  }
+
+  function handleTaxNumberChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setTaxNumber(event.target.value);
+  }
+
+  function handleAddressChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setAddress(event.target.value);
+  }
+
   return (
     <Transition appear show={true}>
       <Dialog as="div" className="fixed inset-0 z-10 overflow-y-auto" onClose={onClose}>
@@ -36,7 +53,7 @@ function BarcodeGenerator({ onClose }: ModalProps) {
             className="fixed inset-
             bg-black opacity-30"
           />
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white shadow-xl rounded-2xl p-8 text-black">
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white shadow-xl rounded-2xl p-8 text-black create-barcode-modal">
             <div
               className="absolute top-2 left-2 text-gray-500 hover:text-gray-900 color-black cursor-pointer"
               onClick={onClose}
@@ -63,12 +80,33 @@ function BarcodeGenerator({ onClose }: ModalProps) {
                   onChange={handleInputChange}
                   className="input input-bordered input-primary w-full max-w-xs"
                 />
+                <input
+                  type="text"
+                  className="input input-bordered input-primary bg-white w-full max-w-xs"
+                  placeholder="Company name"
+                  value={companyName}
+                  onChange={handleCompanyNameChange}
+                />
+                <input
+                  type="text"
+                  className="input input-bordered input-primary bg-white w-full max-w-xs"
+                  placeholder="Tax Number"
+                  value={taxNumber}
+                  onChange={handleTaxNumberChange}
+                />
+                <input
+                  type="text"
+                  className="input input-bordered input-primary bg-white w-full max-w-xs"
+                  placeholder="Address"
+                  value={address}
+                  onChange={handleAddressChange}
+                />
                 <button
                   type="submit"
                   className="text-white w-full md:w-1/3 mx-auto py-4 px-8 rounded-full text-lg font-bold"
                   style={{ background: "cadetblue", width: "100%" }}
                 >
-                  Generate
+                  Create Barcode
                 </button>
               </form>
             </div>
@@ -79,4 +117,4 @@ function BarcodeGenerator({ onClose }: ModalProps) {
   );
 }
 
-export default BarcodeGenerator;
+export default CreateBarcode;

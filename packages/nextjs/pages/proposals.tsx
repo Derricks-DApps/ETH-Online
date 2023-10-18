@@ -4,7 +4,7 @@ import DaoProposalViewer from "~~/components/modals/DaoProposalViewer";
 import daos from "~~/data/daos";
 import DaoTemplate from "~~/interfaces/DaoTemplate";
 
-const BarcodeExplorer = () => {
+const DaoPropsals = () => {
   const [selectedDao, setSelectedDao] = useState<DaoTemplate | null>(null);
 
   const handleRowClick = (dao: DaoTemplate) => {
@@ -59,4 +59,4 @@ const BarcodeExplorer = () => {
   );
 };
 
-export default BarcodeExplorer;
+export default DaoPropsals;
