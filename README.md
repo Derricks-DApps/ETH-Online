@@ -34,6 +34,15 @@ Lorem ipsum
 
 Improvements submitted to project as we integrated them into our project.
     
+## Technologies used
 
-  
+Spark
+
+Scroll
+
+Mask Protocol 
+
+Mantle
+
+ENS
 
