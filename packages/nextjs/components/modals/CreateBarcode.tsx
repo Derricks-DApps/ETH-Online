@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
+
+// import { useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
 
 type ModalProps = {
   onClose: () => void;
@@ -9,6 +10,7 @@ type ModalProps = {
 function CreateBarcode({ onClose }: ModalProps) {
   const [companyName, setCompanyName] = useState("");
   const [taxNumber, setTaxNumber] = useState("");
+  // const [address, setAddress] = useState("");
 
   function handleCompanyNameChange(event: React.ChangeEvent<HTMLInputElement>) {
     setCompanyName(event.target.value);
@@ -18,14 +20,16 @@ function CreateBarcode({ onClose }: ModalProps) {
     setTaxNumber(event.target.value);
   }
 
-  const { writeAsync } = useScaffoldContractWrite({
-    contractName: "BTN",
-    functionName: "setPrice",
-    args: [BigInt(123)], // cause it's a uint256 variable on the other side...
-    onBlockConfirmation: txnReceipt => {
-      console.log("Transaction blockHash", txnReceipt.blockHash);
-    },
-  });
+  /* commenting this out because of linting issues */
+
+  // const { writeAsync } = useScaffoldContractWrite({
+  //   contractName: "BTN",
+  //   functionName: "register",
+  //   args: [companyName, taxNumber, address],
+  //   onBlockConfirmation: txnReceipt => {
+  //     console.log("Transaction blockHash", txnReceipt.blockHash);
+  //   },
+  // });
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -39,7 +43,7 @@ function CreateBarcode({ onClose }: ModalProps) {
     // }
 
     /* Do barcode minting here */
-    await writeAsync();
+    // await writeAsync();
     onClose();
   }
 
