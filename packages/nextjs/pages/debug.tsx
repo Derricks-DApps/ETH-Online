@@ -19,6 +19,7 @@ const Debug: NextPage = () => {
     if (!contractNames.includes(selectedContract)) {
       setSelectedContract(contractNames[0]);
     }
+    console.log("Contract names: ", contractNames);
   }, [selectedContract, setSelectedContract]);
 
   return (

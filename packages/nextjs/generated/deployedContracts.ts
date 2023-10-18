@@ -365,7 +365,7 @@ const contracts = {
             },
             {
               inputs: [],
-              name: "companiesCounter",
+              name: "barcodesTotal",
               outputs: [
                 {
                   internalType: "uint256",
@@ -384,7 +384,35 @@ const contracts = {
                   type: "address",
                 },
               ],
-              name: "companyPrefix",
+              name: "companies",
+              outputs: [
+                {
+                  internalType: "uint64",
+                  name: "taxNumber",
+                  type: "uint64",
+                },
+                {
+                  internalType: "address",
+                  name: "companyOwner",
+                  type: "address",
+                },
+                {
+                  internalType: "string",
+                  name: "name",
+                  type: "string",
+                },
+                {
+                  internalType: "string",
+                  name: "addr",
+                  type: "string",
+                },
+              ],
+              stateMutability: "view",
+              type: "function",
+            },
+            {
+              inputs: [],
+              name: "companiesTotal",
               outputs: [
                 {
                   internalType: "uint256",
@@ -441,9 +469,14 @@ const contracts = {
             {
               inputs: [
                 {
-                  internalType: "uint256",
-                  name: "id",
-                  type: "uint256",
+                  internalType: "string",
+                  name: "name",
+                  type: "string",
+                },
+                {
+                  internalType: "string",
+                  name: "description",
+                  type: "string",
                 },
                 {
                   internalType: "uint256",
@@ -453,25 +486,7 @@ const contracts = {
               ],
               name: "mint",
               outputs: [],
-              stateMutability: "nonpayable",
-              type: "function",
-            },
-            {
-              inputs: [
-                {
-                  internalType: "uint256[]",
-                  name: "ids",
-                  type: "uint256[]",
-                },
-                {
-                  internalType: "uint256[]",
-                  name: "amounts",
-                  type: "uint256[]",
-                },
-              ],
-              name: "mintBatch",
-              outputs: [],
-              stateMutability: "nonpayable",
+              stateMutability: "payable",
               type: "function",
             },
             {
@@ -518,6 +533,71 @@ const contracts = {
                 },
               ],
               stateMutability: "view",
+              type: "function",
+            },
+            {
+              inputs: [
+                {
+                  internalType: "uint256",
+                  name: "",
+                  type: "uint256",
+                },
+              ],
+              name: "products",
+              outputs: [
+                {
+                  internalType: "address",
+                  name: "productOwner",
+                  type: "address",
+                },
+                {
+                  internalType: "string",
+                  name: "name",
+                  type: "string",
+                },
+                {
+                  internalType: "string",
+                  name: "description",
+                  type: "string",
+                },
+              ],
+              stateMutability: "view",
+              type: "function",
+            },
+            {
+              inputs: [],
+              name: "productsTotal",
+              outputs: [
+                {
+                  internalType: "uint256",
+                  name: "",
+                  type: "uint256",
+                },
+              ],
+              stateMutability: "view",
+              type: "function",
+            },
+            {
+              inputs: [
+                {
+                  internalType: "uint64",
+                  name: "taxNumber",
+                  type: "uint64",
+                },
+                {
+                  internalType: "string",
+                  name: "name",
+                  type: "string",
+                },
+                {
+                  internalType: "string",
+                  name: "addr",
+                  type: "string",
+                },
+              ],
+              name: "register",
+              outputs: [],
+              stateMutability: "nonpayable",
               type: "function",
             },
             {
