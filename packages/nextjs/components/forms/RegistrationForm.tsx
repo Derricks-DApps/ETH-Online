@@ -1,33 +1,46 @@
 import React, { useState } from "react";
+import { useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
 
 type RegistrationFormProps = {
-  onSubmit: (companyName: string, taxNumber: number, address: string) => void;
+  onSubmit: () => void;
 };
 
 function RegistrationForm({ onSubmit }: RegistrationFormProps) {
   const [companyName, setCompanyName] = useState("");
-  const [taxNumber, setTaxNumber] = useState(0);
-  const [address, setAddress] = useState("");
+  const [taxId, setTaxId] = useState("");
+  const [streetAddress, setStreetAddress] = useState("");
 
   const handleCompanyNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCompanyName(event.target.value);
   };
 
   const handleTaxNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTaxNumber(parseInt(event.target.value));
+    setTaxId(event.target.value);
   };
 
   const handleAddressChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAddress(event.target.value);
+    setStreetAddress(event.target.value);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    onSubmit(companyName, taxNumber, address);
-  };
+    await writeAsync();
+    // onSubmit(taxId, companyName, streetAddress);
+  }
+
+  const { writeAsync } = useScaffoldContractWrite({
+    contractName: "BTN",
+    functionName: "register",
+    args: [taxId, companyName, streetAddress],
+    onBlockConfirmation: txnReceipt => {
+      console.log("Transaction blockHash", txnReceipt.blockHash);
+      onSubmit();
+    },
+  });
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4">
+      <h2 className="text-2xl">Before we start - tell us a little bit about your company:</h2>
       <input
         type="text"
         className="input input-bordered input-primary bg-white w-full max-w-xs"
@@ -36,10 +49,10 @@ function RegistrationForm({ onSubmit }: RegistrationFormProps) {
         onChange={handleCompanyNameChange}
       />
       <input
-        type="number"
+        type="string"
         className="input input-bordered input-primary bg-white w-full max-w-xs"
-        placeholder="Your company's tax number"
-        value={taxNumber === 0 ? "" : taxNumber}
+        placeholder="Your company's tax ID"
+        value={taxId}
         onChange={handleTaxNumberChange}
         min={0}
         step={1}
@@ -48,7 +61,7 @@ function RegistrationForm({ onSubmit }: RegistrationFormProps) {
         type="text"
         className="input input-bordered input-primary bg-white w-full max-w-xs"
         placeholder="Address"
-        value={address}
+        value={streetAddress}
         onChange={handleAddressChange}
       />
       <button

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import type { NextPage } from "next";
 import { useAccount } from "wagmi";
 import { MetaHeader } from "~~/components/MetaHeader";
@@ -6,18 +6,11 @@ import NavLink from "~~/components/NavLink";
 import ProductForm from "~~/components/forms/ProductForm";
 import RegistrationForm from "~~/components/forms/RegistrationForm";
 import Modal from "~~/components/modals/Modal";
-import { useScaffoldContractRead, useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
+import { useScaffoldContractRead } from "~~/hooks/scaffold-eth";
 
 const Home: NextPage = () => {
   const [showProductForm, setShowProductForm] = useState(false);
   const [showCompanyRegisterForm, setShowCompanyRegisterForm] = useState(false);
-
-  const [companyName, setCompanyName] = useState("");
-  const [taxNumber, setTaxNumber] = useState(0);
-  const [streetAddress, setStreetAddress] = useState("");
-
-  const [productName, setProductName] = useState("");
-  const [description, setDescription] = useState("");
 
   // const contractAddress = "0xD6fa7b0f985d78811c97da04314BADE04cE218bf";
   const { address } = useAccount();
@@ -36,54 +29,11 @@ const Home: NextPage = () => {
     args: [address],
   });
 
-  useEffect(() => {
-    console.log("Address: ", address);
-  }, [address]);
-
-  const { writeAsync: registerCompany } = useScaffoldContractWrite({
-    contractName: "BTN",
-    functionName: "register",
-    args: [BigInt(taxNumber), companyName, streetAddress],
-    onBlockConfirmation: txnReceipt => {
-      console.log("Transaction blockHash", txnReceipt.blockHash);
-    },
-  });
-
-  const { writeAsync: mintBarcode } = useScaffoldContractWrite({
-    contractName: "BTN",
-    functionName: "mint",
-    args: [BigInt(1888), productName, description],
-    onBlockConfirmation: txnReceipt => {
-      console.log("Transaction blockHash", txnReceipt.blockHash);
-    },
-  });
-
-  async function handleRegisterSubmit(companyName: string, taxNumber: number, streetAddress: string) {
-    setCompanyName(companyName);
-    setTaxNumber(taxNumber);
-    setStreetAddress(streetAddress);
-
-    await registerCompany();
+  async function handleRegisterSubmit() {
     setShowCompanyRegisterForm(false);
   }
 
-  async function handleProductSubmit(productName: string, description: string) {
-    setProductName(productName);
-    setDescription(description);
-
-    // product creation + barcode creation here?
-
-    /* capture generated barcode as image */
-
-    // if (barcodeRef.current) {
-    //   html2canvas(barcodeRef.current).then(canvas => {
-    //     const dataUrl = canvas.toDataURL();
-    //     console.log("Image url: ", dataUrl);
-    //   });
-    // }
-
-    /* Do barcode minting here */
-    await mintBarcode();
+  async function handleProductSubmit() {
     setShowProductForm(false);
   }
 
@@ -103,7 +53,7 @@ const Home: NextPage = () => {
         </div>
 
         <div className="flex-grow bg-base-300 w-full mt-16 px-8 py-12">
-          {!!company ? (
+          {company && Number(company[1]) > 0 ? (
             <div onClick={handleGetProductForm}>
               <NavLink href="/">Get Barcodes</NavLink>
             </div>
@@ -121,11 +71,7 @@ const Home: NextPage = () => {
 
           {showProductForm && (
             <Modal onClose={() => setShowProductForm(false)}>
-              <ProductForm
-                onSubmit={() => {
-                  handleProductSubmit;
-                }}
-              ></ProductForm>
+              <ProductForm onSubmit={handleProductSubmit}></ProductForm>
             </Modal>
           )}
         </div>
