@@ -13,7 +13,10 @@ function ProductForm({ onSubmit }: ProductFormProps) {
   const [productName, setProductName] = useState("");
   const [description, setDescription] = useState("");
 
-  const [companyPrefix, setCompanyPrefix] = useState(BigInt(0));
+  const [companyPrefix, setCompanyPrefix] = useState("");
+  const [productPrefix, setProductPrefix] = useState("");
+
+  const [fullBarcodeNumber, setFullBarcodeNumber] = useState("");
 
   const { address } = useAccount();
   const barcodeRef = useRef(null);
@@ -48,19 +51,86 @@ function ProductForm({ onSubmit }: ProductFormProps) {
   }).data as [number, bigint] | undefined;
   // const [, companyPrefix] = company as [number, bigint];
 
-  useEffect(() => {
-    console.log("Full company info: ", company, typeof company);
-    if (company) {
-      const [, prefix] = company;
-      setCompanyPrefix(prefix);
+  const productsTotal = useScaffoldContractRead({
+    contractName: "BTN",
+    functionName: "productsTotal",
+  });
+
+  function calculateCheckDigit(barcodeNumber: string) {
+    //separate the digits into two groups, odd and even
+    const oddDigits = [];
+    const evenDigits = [];
+    for (let i = 0; i < barcodeNumber.length; i++) {
+      if (i % 2 === 0) {
+        oddDigits.push(barcodeNumber[i]);
+      } else {
+        evenDigits.push(barcodeNumber[i]);
+      }
     }
-    // console.log("Company: ", String(company[1]));
+
+    // convert all charcters to numbers
+    const oddDigitsAsNumbers = oddDigits.map(Number);
+    const evenDigitsAsNumbers = evenDigits.map(Number);
+
+    // add all odd digits
+    const oddSum = oddDigitsAsNumbers.reduce((a, b) => a + b, 0);
+    // multiply by three
+    const oddSumTripled = oddSum * 3;
+
+    // add all even digits
+    const evenSum = evenDigitsAsNumbers.reduce((a, b) => a + b, 0);
+
+    // add oddSumTripled and evenSum
+    const totalSum = oddSumTripled + evenSum;
+    console.log("Total sum: ", totalSum);
+    // calculate smallest number needed to round result up to the nearest 10
+    const nextTen = (10 - (totalSum % 10)) % 10;
+    console.log("Next ten: ", nextTen);
+    return nextTen;
+  }
+
+  async function calculateBarcodeNumber() {
+    const barcodeNumber = companyPrefix + productPrefix;
+    console.log("Barcode number: ", barcodeNumber);
+    //setFullBarcodeNumber(barcodeNumber);
+    setFullBarcodeNumber(barcodeNumber + calculateCheckDigit(barcodeNumber));
+  }
+
+  useEffect(() => {
+    async function getCompanyInfo() {
+      if (company) {
+        const [, prefix] = company;
+        console.log("Prefix: ", prefix);
+        // make sure company prefix is made up of six digits - frontload it with '0's otherwise
+        const prefixString = String(prefix);
+        const paddedPrefixStr = prefixString.padStart(6, "0");
+        setCompanyPrefix(paddedPrefixStr);
+      }
+    }
+
+    async function getProductsTotal() {
+      const products = await productsTotal;
+      console.log("Products total: ", products.data, typeof products.data);
+
+      if (products.data) {
+        console.log("Getting products data!");
+        const productIdString = String(products.data);
+        // if the product id is less than 6 digits, frontload it with '0's
+        const paddedProductIdStr = productIdString.padStart(5, "0");
+        setProductPrefix(paddedProductIdStr);
+
+        await calculateBarcodeNumber();
+      }
+    }
+
+    getCompanyInfo();
+    getProductsTotal();
   }, [company]);
 
   const { writeAsync } = useScaffoldContractWrite({
     contractName: "BTN",
     functionName: "mint",
-    args: [companyPrefix, productName, description],
+    args: [BigInt(fullBarcodeNumber), productName, description],
     value: parseEther("0.01"),
     blockConfirmations: 1,
     onBlockConfirmation: txnReceipt => {
@@ -86,9 +156,9 @@ function ProductForm({ onSubmit }: ProductFormProps) {
         value={description}
         onChange={handleDescriptionChange}
       />
-      {!!company && (
+      {fullBarcodeNumber && (
         <div ref={barcodeRef}>
-          <Barcode value={String(company[1])}></Barcode>
+          <Barcode value={fullBarcodeNumber}></Barcode>
         </div>
       )}
       <button
