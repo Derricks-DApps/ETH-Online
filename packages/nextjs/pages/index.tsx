@@ -37,6 +37,16 @@ const Home: NextPage = () => {
     setShowProductForm(false);
   }
 
+  // const { writeAsync: unregister } = useScaffoldContractWrite({
+  //   contractName: "BTN",
+  //   functionName: "ungister",
+  //   args: [address],
+  // });
+
+  // async function triggerUnregister() {
+  //   await unregister();
+  // }
+
   return (
     <>
       <MetaHeader />
@@ -54,8 +64,14 @@ const Home: NextPage = () => {
 
         <div className="flex-grow bg-base-300 w-full mt-16 px-8 py-12">
           {company && Number(company[1]) > 0 ? (
-            <div onClick={handleGetProductForm}>
-              <NavLink href="/">Get Barcodes</NavLink>
+            <div>
+              <div onClick={handleGetProductForm}>
+                <NavLink href="/">Get Barcodes</NavLink>
+              </div>
+
+              {/* <div onClick={triggerUnregister}>
+                <NavLink href="/">Unregister</NavLink>
+              </div> */}
             </div>
           ) : (
             <div onClick={handleGetRegisterClick}>
