@@ -14,9 +14,9 @@ contract BTN is ERC1155, Ownable, ERC1155Pausable, ERC1155Supply {
 	mapping(uint256 => bool) public barcodes;
 
 	struct Company {
-		uint16 prefix;
-		uint64 taxNumber;
 		address companyOwner;
+		uint16 prefix;
+		string taxId;
 		string name;
 		string addr;
 	}
@@ -37,22 +37,6 @@ contract BTN is ERC1155, Ownable, ERC1155Pausable, ERC1155Supply {
 		_setURI(newuri);
 	}
 
-	function register(
-		uint64 taxNumber,
-		string calldata name,
-		string calldata addr
-	) external {
-		require(companies[msg.sender].taxNumber == 0, "already registered");
-		companiesTotal++;
-		companies[msg.sender] = Company({
-			prefix: companiesTotal,
-			taxNumber: taxNumber,
-			companyOwner: msg.sender,
-			name: name,
-			addr: addr
-		});
-	}
-
 	function mint(
 		uint barcode,
 		string memory name,
@@ -68,6 +52,28 @@ contract BTN is ERC1155, Ownable, ERC1155Pausable, ERC1155Supply {
 		});
 		barcodes[barcode] = true;
 		_mint(msg.sender, barcode, 1, "");
+	}
+
+	function register(
+		string calldata taxId,
+		string calldata name,
+		string calldata addr
+	) external {
+		require(companies[msg.sender].prefix == 0, "already registered");
+		companiesTotal++;
+		companies[msg.sender] = Company({
+			companyOwner: msg.sender,
+			prefix: companiesTotal,
+			taxId: taxId,
+			name: name,
+			addr: addr
+		});
+	}
+
+	function ungister(address companyAddress) external onlyOwner {
+		require(companies[msg.sender].prefix != 0, "not registered");
+		Company memory emptyCompany;
+		companies[companyAddress] = emptyCompany;
 	}
 
 	function getCompany(
