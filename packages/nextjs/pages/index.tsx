@@ -2,17 +2,22 @@ import React, { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import { MetaHeader } from "~~/components/MetaHeader";
 import NavLink from "~~/components/NavLink";
+import ProductForm from "~~/components/forms/ProductForm";
 import RegistrationForm from "~~/components/forms/RegistrationForm";
 import Modal from "~~/components/modals/Modal";
 import { useScaffoldContractRead, useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
 import scaffoldConfig from "~~/scaffold.config";
 
 const Home: NextPage = () => {
+  const [showProductForm, setShowProductForm] = useState(false);
   const [showCompanyRegisterForm, setShowCompanyRegisterForm] = useState(false);
 
   const [companyName, setCompanyName] = useState("");
   const [taxNumber, setTaxNumber] = useState(0);
   const [address, setAddress] = useState("");
+
+  const [productName, setProductName] = useState("");
+  const [description, setDescription] = useState("");
 
   const [registered, setRegistered] = useState(false);
 
@@ -25,7 +30,7 @@ const Home: NextPage = () => {
   const { data: company } = useScaffoldContractRead({
     contractName: "BTN",
     functionName: "companies",
-    args: ["0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC"], // dynamic address though
+    args: ["0x70997970C51812dc3A010C7d01b50e0d17dc79C8"], // dynamic address though
   });
 
   useEffect(() => {
@@ -34,7 +39,7 @@ const Home: NextPage = () => {
     console.log("Scaffold config: ", scaffoldConfig);
   }, [company]);
 
-  const { writeAsync } = useScaffoldContractWrite({
+  const { writeAsync: registerCompany } = useScaffoldContractWrite({
     contractName: "BTN",
     functionName: "register",
     args: [BigInt(taxNumber), companyName, address],
@@ -43,10 +48,30 @@ const Home: NextPage = () => {
     },
   });
 
-  async function handleSubmit(companyName: string, taxNumber: number, address: string) {
+  const { writeAsync: mintBarcode } = useScaffoldContractWrite({
+    contractName: "BTN",
+    functionName: "mint",
+    args: [BigInt(1888), productName, description],
+    onBlockConfirmation: txnReceipt => {
+      console.log("Transaction blockHash", txnReceipt.blockHash);
+    },
+  });
+
+  async function handleRegisterSubmit(companyName: string, taxNumber: number, address: string) {
     setCompanyName(companyName);
     setTaxNumber(taxNumber);
     setAddress(address);
+
+    await registerCompany();
+    setShowCompanyRegisterForm(false);
+  }
+
+  async function handleProductSubmit(productName: string, description: string) {
+    setProductName(productName);
+    setDescription(description);
+
+    // product creation + barcode creation here?
+
     /* capture generated barcode as image */
 
     // if (barcodeRef.current) {
@@ -57,8 +82,8 @@ const Home: NextPage = () => {
     // }
 
     /* Do barcode minting here */
-    await writeAsync();
-    setShowCompanyRegisterForm(false);
+    await mintBarcode();
+    setShowProductForm(false);
   }
 
   return (
@@ -89,7 +114,17 @@ const Home: NextPage = () => {
 
           {showCompanyRegisterForm && (
             <Modal onClose={() => setShowCompanyRegisterForm(false)}>
-              <RegistrationForm onSubmit={handleSubmit}></RegistrationForm>
+              <RegistrationForm onSubmit={handleRegisterSubmit}></RegistrationForm>
+            </Modal>
+          )}
+
+          {showProductForm && (
+            <Modal onClose={() => setShowProductForm(false)}>
+              <ProductForm
+                onSubmit={() => {
+                  handleProductSubmit;
+                }}
+              ></ProductForm>
             </Modal>
           )}
         </div>
