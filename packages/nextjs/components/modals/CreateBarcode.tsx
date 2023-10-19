@@ -23,8 +23,6 @@ function CreateBarcode({ onClose }: ModalProps) {
     setAddress(event.target.value);
   }
 
-  /* commenting this out because of linting issues */
-
   const { writeAsync } = useScaffoldContractWrite({
     contractName: "BTN",
     functionName: "register",
