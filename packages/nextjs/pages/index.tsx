@@ -8,28 +8,31 @@ import { useScaffoldContractRead, useScaffoldContractWrite } from "~~/hooks/scaf
 import scaffoldConfig from "~~/scaffold.config";
 
 const Home: NextPage = () => {
-  const [showBarcodeGenerator, setShowBarcodeGenerator] = useState(false);
+  const [showCompanyRegisterForm, setShowCompanyRegisterForm] = useState(false);
 
   const [companyName, setCompanyName] = useState("");
   const [taxNumber, setTaxNumber] = useState(0);
   const [address, setAddress] = useState("");
 
+  const [registered, setRegistered] = useState(false);
+
   // const contractAddress = "0xD6fa7b0f985d78811c97da04314BADE04cE218bf";
 
-  const handleGetBarcodeClick = () => {
-    setShowBarcodeGenerator(true);
+  const handleGetRegisterClick = () => {
+    setShowCompanyRegisterForm(true);
   };
 
   const { data: company } = useScaffoldContractRead({
     contractName: "BTN",
     functionName: "companies",
-    args: ["0x70997970C51812dc3A010C7d01b50e0d17dc79C8"],
+    args: ["0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC"], // dynamic address though
   });
 
   useEffect(() => {
+    if (company !== undefined) setRegistered(true);
     console.log("Company: ", company);
     console.log("Scaffold config: ", scaffoldConfig);
-  }, []);
+  }, [company]);
 
   const { writeAsync } = useScaffoldContractWrite({
     contractName: "BTN",
@@ -55,7 +58,7 @@ const Home: NextPage = () => {
 
     /* Do barcode minting here */
     await writeAsync();
-    setShowBarcodeGenerator(false);
+    setShowCompanyRegisterForm(false);
   }
 
   return (
@@ -74,19 +77,19 @@ const Home: NextPage = () => {
         </div>
 
         <div className="flex-grow bg-base-300 w-full mt-16 px-8 py-12">
-          {!!company ? (
+          {registered ? (
             <div>
               <NavLink href="/">Get Barcodes</NavLink>
             </div>
           ) : (
-            <div onClick={handleGetBarcodeClick}>
+            <div onClick={handleGetRegisterClick}>
               <NavLink href="/">Register your company</NavLink>
             </div>
           )}
 
-          {showBarcodeGenerator && (
-            <Modal onClose={() => setShowBarcodeGenerator(false)}>
-              {!!company ? <p>Already registered</p> : <RegistrationForm onSubmit={handleSubmit}></RegistrationForm>}
+          {showCompanyRegisterForm && (
+            <Modal onClose={() => setShowCompanyRegisterForm(false)}>
+              <RegistrationForm onSubmit={handleSubmit}></RegistrationForm>
             </Modal>
           )}
         </div>
