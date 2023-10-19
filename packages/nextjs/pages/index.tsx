@@ -5,6 +5,7 @@ import NavLink from "~~/components/NavLink";
 import RegistrationForm from "~~/components/forms/RegistrationForm";
 import Modal from "~~/components/modals/Modal";
 import { useScaffoldContractRead, useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
+import scaffoldConfig from "~~/scaffold.config";
 
 const Home: NextPage = () => {
   const [showBarcodeGenerator, setShowBarcodeGenerator] = useState(false);
@@ -12,6 +13,8 @@ const Home: NextPage = () => {
   const [companyName, setCompanyName] = useState("");
   const [taxNumber, setTaxNumber] = useState(0);
   const [address, setAddress] = useState("");
+
+  // const contractAddress = "0xD6fa7b0f985d78811c97da04314BADE04cE218bf";
 
   const handleGetBarcodeClick = () => {
     setShowBarcodeGenerator(true);
@@ -25,6 +28,7 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     console.log("Company: ", company);
+    console.log("Scaffold config: ", scaffoldConfig);
   }, []);
 
   const { writeAsync } = useScaffoldContractWrite({
@@ -70,14 +74,19 @@ const Home: NextPage = () => {
         </div>
 
         <div className="flex-grow bg-base-300 w-full mt-16 px-8 py-12">
-          <div onClick={handleGetBarcodeClick}>
-            <NavLink href="/">Get a Barcode</NavLink>
-          </div>
+          {!!company ? (
+            <div>
+              <NavLink href="/">Get Barcodes</NavLink>
+            </div>
+          ) : (
+            <div onClick={handleGetBarcodeClick}>
+              <NavLink href="/">Register your company</NavLink>
+            </div>
+          )}
 
-          {/* {showBarcodeGenerator && <BarcodeGenerator onClose={() => setShowBarcodeGenerator(false)}></BarcodeGenerator>} */}
           {showBarcodeGenerator && (
             <Modal onClose={() => setShowBarcodeGenerator(false)}>
-              <RegistrationForm onSubmit={handleSubmit}></RegistrationForm>
+              {!!company ? <p>Already registered</p> : <RegistrationForm onSubmit={handleSubmit}></RegistrationForm>}
             </Modal>
           )}
         </div>
