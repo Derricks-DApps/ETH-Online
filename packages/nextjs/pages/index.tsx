@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import type { NextPage } from "next";
+import { useAccount } from "wagmi";
 import { MetaHeader } from "~~/components/MetaHeader";
 import NavLink from "~~/components/NavLink";
 import ProductForm from "~~/components/forms/ProductForm";
 import RegistrationForm from "~~/components/forms/RegistrationForm";
 import Modal from "~~/components/modals/Modal";
 import { useScaffoldContractRead, useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
-import scaffoldConfig from "~~/scaffold.config";
 
 const Home: NextPage = () => {
   const [showProductForm, setShowProductForm] = useState(false);
@@ -14,35 +14,36 @@ const Home: NextPage = () => {
 
   const [companyName, setCompanyName] = useState("");
   const [taxNumber, setTaxNumber] = useState(0);
-  const [address, setAddress] = useState("");
+  const [streetAddress, setStreetAddress] = useState("");
 
   const [productName, setProductName] = useState("");
   const [description, setDescription] = useState("");
 
-  const [registered, setRegistered] = useState(false);
-
   // const contractAddress = "0xD6fa7b0f985d78811c97da04314BADE04cE218bf";
+  const { address } = useAccount();
 
   const handleGetRegisterClick = () => {
     setShowCompanyRegisterForm(true);
   };
 
+  const handleGetProductForm = () => {
+    setShowProductForm(true);
+  };
+
   const { data: company } = useScaffoldContractRead({
     contractName: "BTN",
     functionName: "companies",
-    args: ["0x70997970C51812dc3A010C7d01b50e0d17dc79C8"], // dynamic address though
+    args: [address],
   });
 
   useEffect(() => {
-    if (company !== undefined) setRegistered(true);
-    console.log("Company: ", company);
-    console.log("Scaffold config: ", scaffoldConfig);
-  }, [company]);
+    console.log("Address: ", address);
+  }, [address]);
 
   const { writeAsync: registerCompany } = useScaffoldContractWrite({
     contractName: "BTN",
     functionName: "register",
-    args: [BigInt(taxNumber), companyName, address],
+    args: [BigInt(taxNumber), companyName, streetAddress],
     onBlockConfirmation: txnReceipt => {
       console.log("Transaction blockHash", txnReceipt.blockHash);
     },
@@ -57,10 +58,10 @@ const Home: NextPage = () => {
     },
   });
 
-  async function handleRegisterSubmit(companyName: string, taxNumber: number, address: string) {
+  async function handleRegisterSubmit(companyName: string, taxNumber: number, streetAddress: string) {
     setCompanyName(companyName);
     setTaxNumber(taxNumber);
-    setAddress(address);
+    setStreetAddress(streetAddress);
 
     await registerCompany();
     setShowCompanyRegisterForm(false);
@@ -102,8 +103,8 @@ const Home: NextPage = () => {
         </div>
 
         <div className="flex-grow bg-base-300 w-full mt-16 px-8 py-12">
-          {registered ? (
-            <div>
+          {!!company ? (
+            <div onClick={handleGetProductForm}>
               <NavLink href="/">Get Barcodes</NavLink>
             </div>
           ) : (
