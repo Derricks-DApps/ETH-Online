@@ -104,7 +104,7 @@ function ProductForm({ onSubmit }: ProductFormProps) {
         // make sure company prefix is made up of six digits - frontload it with '0's otherwise
         const prefixString = String(prefix);
         const paddedPrefixStr = prefixString.padStart(6, "0");
-        setCompanyPrefix(paddedPrefixStr);
+        setCompanyPrefix(paddedPrefixStr.replace(/^0/, "1"));
       }
     }
 
@@ -117,6 +117,8 @@ function ProductForm({ onSubmit }: ProductFormProps) {
         const productIdString = String(products.data);
         // if the product id is less than 6 digits, frontload it with '0's
         const paddedProductIdStr = productIdString.padStart(5, "0");
+        // replace first '0' with a '1' to indicate that this is a product
+
         setProductPrefix(paddedProductIdStr);
 
         await calculateBarcodeNumber();
@@ -125,7 +127,7 @@ function ProductForm({ onSubmit }: ProductFormProps) {
 
     getCompanyInfo();
     getProductsTotal();
-  }, [company]);
+  }, [company, productsTotal]);
 
   const { writeAsync } = useScaffoldContractWrite({
     contractName: "BTN",
