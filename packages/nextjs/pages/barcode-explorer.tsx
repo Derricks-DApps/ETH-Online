@@ -1,11 +1,32 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+// import { createClient } from "urql";
 import { MetaHeader } from "~~/components/MetaHeader";
 import BarcodeViewer from "~~/components/modals/BarcodeViewer";
 import barcodes from "~~/data/barcodes";
 import BarcodeTemplate from "~~/interfaces/BarcodeTemplate";
 
+// const query = `
+// query {
+//   ownershipTransferreds(first: 5) {
+//     id
+//     previousOwner
+//     newOwner
+//     blockNumber
+//   }
+// }
+// `;
+// const API_URL = "https://api.studio.thegraph.com/query/54169/goerli-barcodes/version/latest";
+// const client = createClient({
+//   url: API_URL,
+// });
+
 const BarcodeExplorer = () => {
   const [selectedBarcode, setSelectedBarcode] = useState<BarcodeTemplate | null>(null);
+
+  // async function fetchData() {
+  //   // const response = await client.query(query).toPromise();
+  //   // console.log("Response: ", response);
+  // }
 
   const handleRowClick = (barcode: BarcodeTemplate) => {
     setSelectedBarcode(barcode);
@@ -14,6 +35,15 @@ const BarcodeExplorer = () => {
   const handleCloseModal = () => {
     setSelectedBarcode(null);
   };
+
+  useEffect(() => {
+    fetch(
+      "https://gateway.thegraph.com/api/06868917c9873e8866152922e20d4f33/subgraphs/id/d074cfada9f880b55dc1604319544de2",
+    )
+      .then(response => response.json())
+      .then(data => console.log(data))
+      .catch(error => console.error(error));
+  }, []);
 
   return (
     <>
