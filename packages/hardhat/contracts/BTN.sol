@@ -31,8 +31,15 @@ contract BTN is ERC1155, Ownable, ERC1155Pausable, ERC1155Supply {
     }
     // id => product
     mapping (uint256 => Product) public products;
+
+	event Registered(Company company);
+    event Unregistered(address company);
+	event Minted(uint256 indexed barcode, Product product);
+	event PriceChanged(uint256 newPrice);
     
-    constructor(address initialOwner) ERC1155("") Ownable(initialOwner) {}
+    constructor(address initialOwner) ERC1155("") Ownable(initialOwner) {
+        emit PriceChanged(price);
+    }
 
     function setURI(string memory newuri) public onlyOwner {
         _setURI(newuri);
@@ -49,26 +56,40 @@ contract BTN is ERC1155, Ownable, ERC1155Pausable, ERC1155Supply {
     function register(string calldata taxId, string calldata name, string calldata addr) external {
         require(companies[msg.sender].prefix == 0, "already registered"); 
         companiesTotal++;
-        companies[msg.sender]= Company({companyOwner: msg.sender, prefix: companiesTotal, taxId: taxId, name: name, addr: addr});
+        companies[msg.sender]= Company({
+			companyOwner: msg.sender, 
+			prefix: companiesTotal, 
+			taxId: taxId, 
+			name: name, 
+			addr: addr
+		});
+		emit Registered(companies[msg.sender]);
     }
 
 	function ungister(address companyAddress) external onlyOwner {
         require(companies[msg.sender].prefix != 0, "not registered"); 
 		Company memory emptyCompany;
 		companies[companyAddress] = emptyCompany;
+		emit Unregistered(companyAddress);
     }
 
     function mint(uint barcode, string memory name, string memory description) public payable {
         require(msg.value >= price, "Insufficient balance");
         require(!barcodes[barcode], "already exists");
         productsTotal++;
-        products[productsTotal] = Product({productOwner: msg.sender, name: name, description: description});
+        products[productsTotal] = Product({
+			productOwner: msg.sender, 
+			name: name, 
+			description: description
+		});
         barcodes[barcode] = true;
         _mint(msg.sender, barcode, 1, "");
+		emit Minted(barcode, products[productsTotal]);
     }
 
     function setPrice(uint256 _price) external onlyOwner {
         price = _price;
+		emit PriceChanged(_price);
     }
 
     function getCompany(address _company) external view returns(Company memory) {
