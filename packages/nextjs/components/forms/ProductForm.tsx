@@ -59,6 +59,43 @@ function ProductForm({ onSubmit }: ProductFormProps) {
     functionName: "productsTotal",
   });
 
+  function generateFullBarcodeNumber(companyAddress: [number, bigint] | undefined) {
+    async function getCompanyInfo() {
+      if (companyAddress) {
+        const [, prefix] = companyAddress;
+        console.log("Prefix: ", prefix);
+        // make sure company prefix is made up of six digits - frontload it with '0's otherwise
+        const prefixString = String(prefix);
+        const paddedPrefixStr = prefixString.padStart(6, "0");
+        setCompanyPrefix(paddedPrefixStr.replace(/^0/, "1"));
+      }
+    }
+
+    async function getProductsTotal() {
+      const products = await productsTotal;
+      console.log("Products total: ", products.data);
+
+      if (products.data !== undefined) {
+        console.log("Getting products data!");
+        const productIdString = String(products.data);
+        // if the product id is less than 6 digits, frontload it with '0's
+        const paddedProductIdStr = productIdString.padStart(5, "0");
+        // replace first '0' with a '1' to indicate that this is a product
+
+        setProductPrefix(paddedProductIdStr);
+
+        await calculateBarcodeNumber();
+      }
+    }
+
+    getCompanyInfo();
+    getProductsTotal();
+  }
+
+  useEffect(() => {
+    generateFullBarcodeNumber(company);
+  }, [company, productsTotal]);
+
   function calculateCheckDigit(barcodeNumber: string) {
     //separate the digits into two groups, odd and even
     const oddDigits = [];
@@ -99,39 +136,6 @@ function ProductForm({ onSubmit }: ProductFormProps) {
     setFullBarcodeNumber(barcodeNumber + calculateCheckDigit(barcodeNumber));
   }
 
-  useEffect(() => {
-    async function getCompanyInfo() {
-      if (company) {
-        const [, prefix] = company;
-        console.log("Prefix: ", prefix);
-        // make sure company prefix is made up of six digits - frontload it with '0's otherwise
-        const prefixString = String(prefix);
-        const paddedPrefixStr = prefixString.padStart(6, "0");
-        setCompanyPrefix(paddedPrefixStr.replace(/^0/, "1"));
-      }
-    }
-
-    async function getProductsTotal() {
-      const products = await productsTotal;
-      console.log("Products total: ", products.data);
-
-      if (products.data !== undefined) {
-        console.log("Getting products data!");
-        const productIdString = String(products.data);
-        // if the product id is less than 6 digits, frontload it with '0's
-        const paddedProductIdStr = productIdString.padStart(5, "0");
-        // replace first '0' with a '1' to indicate that this is a product
-
-        setProductPrefix(paddedProductIdStr);
-
-        await calculateBarcodeNumber();
-      }
-    }
-
-    getCompanyInfo();
-    getProductsTotal();
-  }, [company, productsTotal]);
-
   const { writeAsync } = useScaffoldContractWrite({
     contractName: "BTN",
     functionName: "mint",
@@ -148,8 +152,11 @@ function ProductForm({ onSubmit }: ProductFormProps) {
   return (
     <form onSubmit={handleSubmit}>
       <h2 className="text-2xl">And now to create your barcode: </h2>
-      {isLoading !== undefined ? (
-        <ReactLoading type="spin" color="white" />
+      {isLoading ? (
+        <div className="flex flex-col items-center gap-4">
+          <p>Thank You! We&apos;re now processing your barcode...</p>
+          <ReactLoading type="cubes" color="cadetblue" />
+        </div>
       ) : (
         <div className="flex flex-col items-center gap-4">
           <input

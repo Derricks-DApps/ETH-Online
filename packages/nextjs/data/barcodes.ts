@@ -2,22 +2,11 @@ import BarcodeTemplate from "~~/interfaces/BarcodeTemplate";
 
 const barcodes: BarcodeTemplate[] = [
   {
-    id: 1,
-    productName: "Product 1",
-    description: "Description of product 1",
-    price: 10.99,
-  },
-  {
-    id: 2,
-    productName: "Product 2",
-    description: "Description of product 2",
-    price: 19.99,
-  },
-  {
-    id: 3,
-    productName: "Product 3",
-    description: "Description of product 3",
-    price: 5.99,
+    id: "0xe4e82cd2a6d4f34ab1c60e8f2a9ad5061c1e301e90cd5b1f589e96dcc482e93a17000000",
+    barcode: "100001000013",
+    product_productOwner: "0xae4302f45fed13369483f0a4567e109c06d139aa",
+    product_name: "hi",
+    __typename: "Minted",
   },
 ];
 

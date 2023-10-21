@@ -46,7 +46,7 @@ function RegistrationForm({ onSubmit }: RegistrationFormProps) {
     <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4">
       <h2 className="text-2xl">Before we start - tell us a little bit about your company:</h2>
       {isLoading ? (
-        <ReactLoading type="spin" color="cadetblue" height={100} width={100} />
+        <ReactLoading type="balls" color="cadetblue" height={100} width={100} />
       ) : (
         <div>
           <input
