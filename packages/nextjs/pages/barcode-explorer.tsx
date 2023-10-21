@@ -69,7 +69,7 @@ const BarcodeExplorer = () => {
   const filteredBarcodes = barcodes.filter(barcode => {
     const searchRegex = new RegExp(searchQuery, "i");
     return (
-      searchRegex.test(barcode.barcode) ||
+      searchRegex.test(String(barcode.barcode)) ||
       searchRegex.test(barcode.product_name) ||
       searchRegex.test(barcode.company_name ?? "")
     );

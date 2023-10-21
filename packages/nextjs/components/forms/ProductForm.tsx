@@ -63,7 +63,6 @@ function ProductForm({ onSubmit }: ProductFormProps) {
     async function getCompanyInfo() {
       if (companyAddress) {
         const [, prefix] = companyAddress;
-        console.log("Prefix: ", prefix);
         // make sure company prefix is made up of six digits - frontload it with '0's otherwise
         const prefixString = String(prefix);
         const paddedPrefixStr = prefixString.padStart(6, "0");
@@ -73,10 +72,8 @@ function ProductForm({ onSubmit }: ProductFormProps) {
 
     async function getProductsTotal() {
       const products = await productsTotal;
-      console.log("Products total: ", products.data);
 
       if (products.data !== undefined) {
-        console.log("Getting products data!");
         const productIdString = String(products.data);
         // if the product id is less than 6 digits, frontload it with '0's
         const paddedProductIdStr = productIdString.padStart(5, "0");
@@ -122,16 +119,13 @@ function ProductForm({ onSubmit }: ProductFormProps) {
 
     // add oddSumTripled and evenSum
     const totalSum = oddSumTripled + evenSum;
-    console.log("Total sum: ", totalSum);
     // calculate smallest number needed to round result up to the nearest 10
     const nextTen = (10 - (totalSum % 10)) % 10;
-    console.log("Next ten: ", nextTen);
     return nextTen;
   }
 
   async function calculateBarcodeNumber() {
     const barcodeNumber = companyPrefix + productPrefix;
-    console.log("Barcode number: ", barcodeNumber);
     //setFullBarcodeNumber(barcodeNumber);
     setFullBarcodeNumber(barcodeNumber + calculateCheckDigit(barcodeNumber));
   }
