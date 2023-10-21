@@ -1,11 +1,11 @@
 const contracts = {
-  31337: [
+  5: [
     {
-      chainId: "31337",
+      chainId: "5",
       name: "localhost",
       contracts: {
         BTN: {
-          address: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
+          address: "0x3d30881088968DC28ce0D6F07Eda38c4E30cF55c",
           abi: [
             {
               inputs: [

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import html2canvas from "html2canvas";
 import Barcode from "react-jsbarcode";
+import ReactLoading from "react-loading";
 import { parseEther } from "viem";
 import { useAccount } from "wagmi";
 import { useScaffoldContractRead, useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
@@ -17,6 +18,8 @@ function ProductForm({ onSubmit }: ProductFormProps) {
   const [productPrefix, setProductPrefix] = useState("");
 
   const [fullBarcodeNumber, setFullBarcodeNumber] = useState("");
+
+  const [isLoading, setLoading] = useState(false);
 
   const { address } = useAccount();
   const barcodeRef = useRef(null);
@@ -39,7 +42,7 @@ function ProductForm({ onSubmit }: ProductFormProps) {
         console.log("Image url: ", dataUrl);
       });
     }
-
+    setLoading(true);
     await writeAsync();
     onSubmit();
   }
@@ -110,9 +113,9 @@ function ProductForm({ onSubmit }: ProductFormProps) {
 
     async function getProductsTotal() {
       const products = await productsTotal;
-      console.log("Products total: ", products.data, typeof products.data);
+      console.log("Products total: ", products.data);
 
-      if (products.data) {
+      if (products.data !== undefined) {
         console.log("Getting products data!");
         const productIdString = String(products.data);
         // if the product id is less than 6 digits, frontload it with '0's
@@ -137,39 +140,46 @@ function ProductForm({ onSubmit }: ProductFormProps) {
     blockConfirmations: 1,
     onBlockConfirmation: txnReceipt => {
       console.log("Transaction blockHash", txnReceipt.blockHash);
+      setLoading(false);
       onSubmit();
     },
   });
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4">
+    <form onSubmit={handleSubmit}>
       <h2 className="text-2xl">And now to create your barcode: </h2>
-      <input
-        type="text"
-        className="input input-bordered input-primary bg-white w-full max-w-xs"
-        placeholder="Your product's name"
-        value={productName}
-        onChange={handleProductNameChange}
-      />
-      <input
-        type="text"
-        className="input input-bordered input-primary bg-white w-full max-w-xs"
-        placeholder="Give your product a description"
-        value={description}
-        onChange={handleDescriptionChange}
-      />
-      {fullBarcodeNumber && (
-        <div ref={barcodeRef}>
-          <Barcode value={fullBarcodeNumber}></Barcode>
+      {isLoading !== undefined ? (
+        <ReactLoading type="spin" color="white" />
+      ) : (
+        <div className="flex flex-col items-center gap-4">
+          <input
+            type="text"
+            className="input input-bordered input-primary bg-white w-full max-w-xs"
+            placeholder="Your product's name"
+            value={productName}
+            onChange={handleProductNameChange}
+          />
+          <input
+            type="text"
+            className="input input-bordered input-primary bg-white w-full max-w-xs"
+            placeholder="Give your product a description"
+            value={description}
+            onChange={handleDescriptionChange}
+          />
+          {fullBarcodeNumber && (
+            <div ref={barcodeRef}>
+              <Barcode value={fullBarcodeNumber}></Barcode>
+            </div>
+          )}
+          <button
+            type="submit"
+            className="text-white w-full md:w-1/3 mx-auto py-4 px-8 rounded-full text-lg font-bold"
+            style={{ background: "cadetblue", width: "100%" }}
+          >
+            Create your barcode
+          </button>
         </div>
       )}
-      <button
-        type="submit"
-        className="text-white w-full md:w-1/3 mx-auto py-4 px-8 rounded-full text-lg font-bold"
-        style={{ background: "cadetblue", width: "100%" }}
-      >
-        Create your barcode
-      </button>
     </form>
   );
 }

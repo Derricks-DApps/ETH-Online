@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import { useAccount } from "wagmi";
 import { MetaHeader } from "~~/components/MetaHeader";
@@ -8,11 +8,16 @@ import RegistrationForm from "~~/components/forms/RegistrationForm";
 import Modal from "~~/components/modals/Modal";
 import { useScaffoldContractRead } from "~~/hooks/scaffold-eth";
 
+// import { BTNAbi } from
+
 const Home: NextPage = () => {
   const [showProductForm, setShowProductForm] = useState(false);
   const [showCompanyRegisterForm, setShowCompanyRegisterForm] = useState(false);
 
-  // const contractAddress = "0xD6fa7b0f985d78811c97da04314BADE04cE218bf";
+  const [registered, setRegistered] = useState(false);
+  const [checkingRegister, setCheckingRegister] = useState(false);
+
+  //const contractAddress = "0x3d30881088968DC28ce0D6F07Eda38c4E30cF55c";
   const { address } = useAccount();
 
   const handleGetRegisterClick = () => {
@@ -28,6 +33,20 @@ const Home: NextPage = () => {
     functionName: "companies",
     args: [address],
   });
+
+  useEffect(() => {
+    setCheckingRegister(true);
+    if (company && Number(company[1]) > 0) {
+      setRegistered(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (company && Number(company[1]) > 0) {
+      setRegistered(true);
+    }
+    setCheckingRegister(false);
+  }, [company, checkingRegister]);
 
   async function handleRegisterSubmit() {
     setShowCompanyRegisterForm(false);
@@ -63,15 +82,17 @@ const Home: NextPage = () => {
         </div>
 
         <div className="flex-grow bg-base-300 w-full mt-16 px-8 py-12">
-          {company && Number(company[1]) > 0 ? (
+          {checkingRegister ? (
+            <p>We are checking to see if you are registered...</p>
+          ) : registered ? (
             <div>
               <div onClick={handleGetProductForm}>
                 <NavLink href="/">Get Barcodes</NavLink>
               </div>
 
               {/* <div onClick={triggerUnregister}>
-                <NavLink href="/">Unregister</NavLink>
-              </div> */}
+                  <NavLink href="/">Unregister</NavLink>
+                </div> */}
             </div>
           ) : (
             <div onClick={handleGetRegisterClick}>

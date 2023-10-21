@@ -7,11 +7,17 @@ import BarcodeTemplate from "~~/interfaces/BarcodeTemplate";
 
 const query = `
 {
-  ownershipTransferreds(first: 5) {
+  minted(id: "") {
+    barcode
+    product_description
+    product_name
+    product_productOwner
+  }
+  minteds(first: 5) {
     id
-    previousOwner
-    newOwner
-    blockNumber
+    barcode
+    product_productOwner
+    product_name
   }
 }
 `;
