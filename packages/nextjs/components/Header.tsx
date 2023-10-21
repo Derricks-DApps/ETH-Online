@@ -1,8 +1,7 @@
 import React, { useCallback, useRef, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Bars3Icon, BugAntIcon, MagnifyingGlassIcon, SparklesIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, MagnifyingGlassIcon, SparklesIcon } from "@heroicons/react/24/outline";
 import { FaucetButton, RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
 import { useOutsideClick } from "~~/hooks/scaffold-eth";
 
@@ -36,24 +35,24 @@ export const Header = () => {
 
   const navLinks = (
     <>
-      <li>
+      {/* <li>
         <NavLink href="/">Home</NavLink>
-      </li>
-      <li>
+      </li> */}
+      {/* <li>
         <NavLink href="/debug">
-          {/* <BugAntIcon className="h-4 w-4" /> */}
+          <BugAntIcon className="h-4 w-4" />
           Services
         </NavLink>
-      </li>     
+      </li> */}
       <li>
-        <NavLink href="/blockexplorer">
+        <NavLink href="/barcode-explorer">
           <MagnifyingGlassIcon className="h-4 w-4" />
           Barcodes
         </NavLink>
       </li>
       <li>
-        <NavLink href="/example-ui">
-          {/* <SparklesIcon className="h-4 w-4" /> */}
+        <NavLink href="/proposals">
+          <SparklesIcon className="h-4 w-4" />
           Proposals
         </NavLink>
       </li>
@@ -85,11 +84,11 @@ export const Header = () => {
             </ul>
           )}
         </div>
-        <Link href="/" passHref className="hidden lg:flex items-center gap-2 ml-4 mr-6 shrink-0">
+        <Link href="/" passHref className="hidden lg:flex items-center gap-2 mr-6 shrink-0">
           <div className="flex relative w-10 h-10">
-            {/* <Image alt="SE2 logo" className="cursor-pointer" fill src="/logo.svg" /> */}
+            <img alt="BTree" src="/assets/logo.png" />
           </div>
-          <h1>BTree</h1>
+          <h1 style={{ color: "dodgerblue" }}>BTree</h1>
         </Link>
         <ul className="hidden lg:flex lg:flex-nowrap menu menu-horizontal px-1 gap-2">{navLinks}</ul>
       </div>

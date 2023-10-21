@@ -30,3 +30,11 @@ p {
 .btn.btn-ghost {
   @apply shadow-none;
 }
+
+.description {
+  font-size: 1.5em;
+}
+
+.create-barcode-modal {
+  width: 50%;
+}

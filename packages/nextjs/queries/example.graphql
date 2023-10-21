@@ -1,0 +1,8 @@
+query Example {
+  ownershipTransferreds(first: 5) {
+    id
+    previousOwner
+    newOwner
+    blockNumber
+  }
+}

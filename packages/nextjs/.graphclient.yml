@@ -1,0 +1,8 @@
+# .graphclient.yml
+sources:
+  - name: goerli-barcodes
+    handler:
+      graphql:
+        endpoint: https://api.studio.thegraph.com/query/54169/goerli-barcodes/version/latest
+# documents:
+#   - ./queries/example.graphql
