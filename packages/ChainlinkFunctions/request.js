@@ -8,16 +8,14 @@ const {
   decodeResult,
   FulfillmentCode
 } = require("@chainlink/functions-toolkit");
-const functionsConsumerAbi = require("../../abi/functionsClient.json");
+const functionsConsumerAbi = require("functionsClient.json");
 const ethers = require("ethers");
-require("@chainlink/env-enc").config();
+// require("@chainlink/env-enc").config();
 
-const consumerAddress = "0x8dFf78B7EE3128D00E90611FBeD20A71397064D9"; // REPLACE this with your Functions consumer address
-const subscriptionId = 3; // REPLACE this with your subscription ID
+const consumerAddress = "0xd4a73104A536B5D71F66d52BBdcce8Ca767D6a7A"; 
+const subscriptionId = 471; 
 
-// hardcoded for Polygon Mumbai
 const makeRequestMumbai = async () => {
-  // hardcoded for Polygon Mumbai
   const routerAddress = "0x6E2dc0F9DB014aE19888F539E59285D2Ea04244C";
   const linkTokenAddress = "0x326C977E6efc84E512bB9C30f76E30c160eD06FB";
   const donId = "fun-polygon-mumbai-1";
@@ -28,11 +26,12 @@ const makeRequestMumbai = async () => {
     .readFileSync(path.resolve(__dirname, "check-digit.js"))
     .toString();
 
-  const args = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
+  // const args = ["00001", "00001"];
+  const args = [];
   const gasLimit = 300000;
 
   // Initialize ethers signer and provider to interact with the contracts onchain
-  const privateKey = process.env.PRIVATE_KEY; // fetch PRIVATE_KEY
+  const privateKey = process.env.DEPLOYER_PRIVATE_KEY;
   if (!privateKey)
     throw new Error(
       "private key not provided - check your environment variables"

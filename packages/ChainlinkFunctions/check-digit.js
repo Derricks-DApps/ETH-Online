@@ -1,5 +1,6 @@
-function calculateCheckDigit(args.reduce(barcodeNumber)) => {
-  
+// function calculateCheckDigit(args[0]) => {
+function calculateCheckDigit() => {
+    const barcodeNumber = 10000100001;
     //separate the digits into two groups, odd and even
     const oddDigits = [];
     const evenDigits = [];
@@ -30,5 +31,6 @@ function calculateCheckDigit(args.reduce(barcodeNumber)) => {
     const nextTen = (10 - (totalSum % 10)) % 10;
     console.log("Next ten: ", nextTen);
     // return nextTen;
-    return Functions.encodeUint256(nextTen);
+    // return Functions.encodeUint256(nextTen);
+    return Functions.encodeUint256(100001000018);
   }
