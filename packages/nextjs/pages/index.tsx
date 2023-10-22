@@ -75,10 +75,21 @@ const Home: NextPage = () => {
             {/* <span className="block text-4xl font-bold">BTree</span> */}
             <img src="/assets/logo.png" alt="BTree" style={{ display: "inline", width: "256px", height: "256px" }} />
           </h1>
-          <p className="description text-center">
-            BTree is a governance and issuing service for Barcodes as an alternative to GS1. Gives businesses a global
-            database to share product information.
-          </p>
+          {!registered && !!company ? (
+            <>
+              <p className="description text-center">
+                BTree is a governance and issuing service for Barcodes as an alternative to GS1.
+              </p>
+              <p>We give businesses a global database on which to share product information.</p>
+            </>
+          ) : (
+            company !== undefined && (
+              <>
+                <p className="description text-center">Welcome! You are now producing barcodes as {company[3]}</p>
+                <p className="description text-center">with Tax ID: {company[2]}</p>
+              </>
+            )
+          )}
         </div>
 
         <div className="flex-grow bg-base-300 w-full mt-16 px-8 py-12">
@@ -91,8 +102,8 @@ const Home: NextPage = () => {
               </div>
 
               {/* <div onClick={triggerUnregister}>
-                  <NavLink href="/">Unregister</NavLink>
-                </div> */}
+                <NavLink href="/">Unregister</NavLink>
+              </div> */}
             </div>
           ) : (
             <div onClick={handleGetRegisterClick}>

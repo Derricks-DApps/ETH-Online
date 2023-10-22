@@ -48,7 +48,7 @@ function RegistrationForm({ onSubmit }: RegistrationFormProps) {
       {isLoading ? (
         <ReactLoading type="balls" color="cadetblue" height={100} width={100} />
       ) : (
-        <div>
+        <div className="flex flex-col items-center gap-4">
           <input
             type="text"
             className="input input-bordered input-primary bg-white w-full max-w-xs"
@@ -81,7 +81,6 @@ function RegistrationForm({ onSubmit }: RegistrationFormProps) {
           </button>
         </div>
       )}
-      )
     </form>
   );
 }

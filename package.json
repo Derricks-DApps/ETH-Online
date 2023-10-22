@@ -39,6 +39,8 @@
     },
     "packageManager": "yarn@3.2.3",
     "dependencies": {
+        "@chainlink/env-enc": "^1.0.5",
+        "@chainlink/functions-toolkit": "^0.2.5",
         "html2canvas": "^1.4.1",
         "react-jsbarcode": "^0.4.2",
         "yaml": "^2.3.3"

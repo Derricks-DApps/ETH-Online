@@ -6,14 +6,14 @@ const {
   ResponseListener,
   ReturnType,
   decodeResult,
-  FulfillmentCode
+  FulfillmentCode,
 } = require("@chainlink/functions-toolkit");
-const functionsConsumerAbi = require("../../abi/functionsClient.json");
+const functionsConsumerAbi = require("./abi/functionsClient.json");
 const ethers = require("ethers");
 require("@chainlink/env-enc").config();
 
-const consumerAddress = "0x8dFf78B7EE3128D00E90611FBeD20A71397064D9"; // REPLACE this with your Functions consumer address
-const subscriptionId = 3; // REPLACE this with your subscription ID
+const consumerAddress = "0xd9145CCE52D386f254917e481eB44e9943F39138"; // REPLACE this with your Functions consumer address
+const subscriptionId = 471; // REPLACE this with your subscription ID
 
 // hardcoded for Polygon Mumbai
 const makeRequestMumbai = async () => {
