@@ -88,7 +88,7 @@ export const Header = () => {
           <div className="flex relative w-10 h-10">
             <img alt="BTree" src="/assets/logo.png" />
           </div>
-          <h1 style={{ color: "dodgerblue" }}>BTree</h1>
+          <h1 style={{ color: "dodgerblue", marginBottom: "0px" }}>BTree</h1>
         </Link>
         <ul className="hidden lg:flex lg:flex-nowrap menu menu-horizontal px-1 gap-2">{navLinks}</ul>
       </div>
