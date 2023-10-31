@@ -9,7 +9,7 @@
 
 
 
-Governance and issuing service for Barcodes as an alternative to GS1. Gives Busnisesses a global database to share product information.
+Governance and issuing service for Barcodes as an alternative to GS1. Gives businesses a global database to share product information.
 
 Contract Address - Scroll
 
